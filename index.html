@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们的爱情故事 — 豪 & 珍</title>
+    <style>
+        /* ========== 基础重置与全局 ========== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --orange-50: #fff7ed;
+            --orange-100: #ffedd5;
+            --orange-200: #fed7aa;
+            --orange-300: #fdba74;
+            --orange-400: #fb923c;
+            --orange-500: #f97316;
+            --orange-600: #ea580c;
+            --orange-700: #c2410c;
+            --orange-800: #9a3412;
+            --orange-900: #7c2d12;
+            --amber-400: #fbbf24;
+            --amber-500: #f59e0b;
+            --warm-dark: #1a0f00;
+            --warm-dark-soft: #2d1a00;
+            --text-light: #fef3c7;
+            --text-white: #ffffff;
+            --font-serif: 'Georgia', 'Noto Serif SC', 'SimSun', serif;
+            --font-sans: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--warm-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        /* ========== 导航栏 ========== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(26,15,0,0.95) 0%, rgba(26,15,0,0) 100%);
+            transition: background 0.4s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(26,15,0,0.97);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 2px 30px rgba(249,115,22,0.15);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--orange-400);
+            text-decoration: none;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: var(--amber-400);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--orange-200);
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--orange-400);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--orange-400);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ========== Hero 区域 ========== */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a0f00 0%, #2d1a00 50%, #1a0f00 100%);
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(249,115,22,0.15) 0%, transparent 70%);
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                180deg,
+                rgba(26,15,0,0.2) 0%,
+                rgba(26,15,0,0.1) 40%,
+                rgba(26,15,0,0.3) 70%,
+                rgba(26,15,0,1) 100%
+            );
+        }
+
+        /* 光线效果 */
+        .hero-light {
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120%;
+            height: 100%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(249,115,22,0.12) 0%,
+                rgba(249,115,22,0.05) 30%,
+                transparent 70%
+            );
+            animation: lightPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes lightPulse {
+            0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* 人物照片展示 */
+        .hero-photos {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            z-index: 5;
+        }
+
+        .hero-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--orange-500);
+            box-shadow: 0 0 40px rgba(249,115,22,0.4);
+            animation: photoFloat 6s ease-in-out infinite;
+        }
+
+        .hero-photo:nth-child(2) {
+            animation-delay: -3s;
+        }
+
+        .hero-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes photoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .heart-connector {
+            font-size: 3rem;
+            color: var(--orange-500);
+            text-shadow: 0 0 20px rgba(249,115,22,0.6);
+            animation: heartBeat 1.5s infinite;
+            z-index: 6;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            padding: 0 2rem;
+            padding-top: 200px;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            color: var(--text-white);
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 30px rgba(249,115,22,0.4);
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        .hero-content h1 .highlight {
+            color: var(--orange-400);
+            font-style: italic;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--orange-200);
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1.2s ease-out 0.3s both;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 0.9rem 2.5rem;
+            background: linear-gradient(135deg, var(--orange-500), var(--orange-600));
+            color: var(--text-white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 25px rgba(249,115,22,0.4);
+            animation: fadeInUp 1.2s ease-out 0.6s both;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(249,115,22,0.6);
+            background: linear-gradient(135deg, var(--orange-400), var(--orange-500));
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            width: 24px;
+            height: 24px;
+            border-right: 2px solid var(--orange-400);
+            border-bottom: 2px solid var(--orange-400);
+            transform: rotate(45deg);
+            opacity: 0.6;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== 通用 Section ========== */
+        section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            color: var(--text-white);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title .divider {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange-500), var(--amber-400));
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--orange-300);
+            margin-top: 1rem;
+            font-size: 1.05rem;
+        }
+
+        /* ========== 关于我们 ========== */
+        .about {
+            background: linear-gradient(180deg, var(--warm-dark) 0%, var(--warm-dark-soft) 100%);
+        }
+
+        .about-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-photos {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .about-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid var(--orange-500);
+            box-shadow: 0 10px 30px rgba(249,115,22,0.3);
+            transition: transform 0.4s ease;
+        }
+
+        .about-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .about-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-text h3 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--orange-400);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            color: var(--orange-200);
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+
+        /* ========== 我们的故事 ========== */
+        .story {
+            background: var(--warm-dark-soft);
+            position: relative;
+        }
+
+        .story::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -20%;
+            width: 60%;
+            height: 100%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(249,115,22,0.06) 0%,
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        .story-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .story-card {
+            background: linear-gradient(145deg, rgba(45,26,0,0.8), rgba(26,15,0,0.9));
+            border: 1px solid rgba(249,115,22,0.15);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .story-date {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--orange-500), var(--orange-600));
+            color: var(--text-white);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .story-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--orange-400);
+            margin-bottom: 1.5rem;
+        }
+
+        .story-card p {
+            color: var(--orange-200);
+            font-size: 1.1rem;
+            line-height: 2.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ========== 爱的告白 ========== */
+        .confession {
+            background: linear-gradient(180deg, var(--warm-dark-soft) 0%, var(--warm-dark) 100%);
+        }
+
+        .confession-content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, rgba(45,26,0,0.9), rgba(26,15,0,0.95));
+            border: 1px solid rgba(249,115,22,0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confession-content::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 8rem;
+            color: var(--orange-700);
+            opacity: 0.2;
+            font-family: var(--font-serif);
+        }
+
+        .confession-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .confession-text p {
+            color: var(--orange-200);
+            font-size: 1.15rem;
+            line-height: 2.3;
+            margin-bottom: 1.5rem;
+            text-indent: 2em;
+        }
+
+        .confession-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .confession-signature {
+            text-align: right;
+            margin-top: 2rem;
+            color: var(--orange-400);
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+        }
+
+        /* ========== 计时器 ========== */
+        .timer-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--warm-dark);
+        }
+
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .timer-item {
+            background: linear-gradient(145deg, rgba(45,26,0,0.8), rgba(26,15,0,0.9));
+            border: 1px solid rgba(249,115,22,0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            min-width: 120px;
+        }
+
+        .timer-item .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--orange-400);
+            font-family: var(--font-serif);
+        }
+
+        .timer-item .label {
+            color: var(--orange-300);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* ========== 引言区域 ========== */
+        .quote-section {
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(
+                circle,
+                rgba(249,115,22,0.08) 0%,
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        .quote-section blockquote {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--orange-300);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-section .author {
+            margin-top: 1.5rem;
+            color: var(--orange-500);
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        /* ========== 页脚 ========== */
+        footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(249,115,22,0.1);
+            background: var(--warm-dark);
+        }
+
+        footer p {
+            color: var(--orange-700);
+            font-size: 0.9rem;
+        }
+
+        footer .heart {
+            color: var(--orange-500);
+            animation: heartbeat 1.5s infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ========== 滚动动画 ========== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-photos {
+                gap: 1rem;
+            }
+
+            .hero-photo {
+                width: 120px;
+                height: 120px;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-photos {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .quote-section blockquote {
+                font-size: 1.3rem;
+            }
+
+            .timer-container {
+                gap: 1rem;
+            }
+
+            .timer-item {
+                min-width: 80px;
+                padding: 1rem;
+            }
+
+            .timer-item .number {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav id="navbar">
+        <a href="#" class="logo">豪 <span>&</span> 珍</a>
+        <ul class="nav-links">
+            <li><a href="#about">关于我们</a></li>
+            <li><a href="#story">我们的故事</a></li>
+            <li><a href="#confession">爱的告白</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero 区域 -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-light"></div>
+        
+        <div class="hero-photos">
+            <div class="hero-photo">
+                <img src="assets/him.png" alt="他">
+            </div>
+            <span class="heart-connector">💕</span>
+            <div class="hero-photo">
+                <img src="assets/her.png" alt="她">
+            </div>
+        </div>
+        
+        <div class="hero-content">
+            <h1>在时光里，遇见<span class="highlight">你</span></h1>
+            <p>2025年12月24日，我们在网上相遇，从此开启了一段美好的爱情故事</p>
+            <a href="#story" class="hero-btn">阅读我们的故事</a>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section class="about" id="about">
+        <div class="section-title fade-in">
+            <h2>关于我们</h2>
+            <div class="divider"></div>
+            <p>两颗心，一段缘</p>
+        </div>
+        <div class="about-container">
+            <div class="about-photos fade-in">
+                <div class="about-photo">
+                    <img src="assets/him.png" alt="他">
+                </div>
+                <div class="about-photo">
+                    <img src="assets/her.png" alt="她">
+                </div>
+            </div>
+            <div class="about-text fade-in">
+                <h3>相遇是缘，相守是福</h3>
+                <p>在这个快节奏的世界里，我们在茫茫人海中相遇。2025年12月24日，一个平凡却又不平凡的日子，我们在网络上相识。</p>
+                <p>从第一次视频见面的怦然心动，到每一次见面时的自然反应，我们用心感受着彼此的存在。虽然有过波折，有过两次分开的提议，但这些都没有冲淡我们的感情，反而让我们更加珍惜彼此。</p>
+                <p>深圳这座城市因为有了你，空气都变得甜蜜。139天的相伴，是我们爱情最美的见证。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 我们的故事 -->
+    <section class="story" id="story">
+        <div class="section-title fade-in">
+            <h2>我们的故事</h2>
+            <div class="divider"></div>
+            <p>从相遇、相知到相守</p>
+        </div>
+        <div class="story-content fade-in">
+            <div class="story-card">
+                <span class="story-date">2025年12月24日 · 网上相识</span>
+                <h3>初遇 · 那个特别的平安夜</h3>
+                <p>2025年12月24日，平安夜。我们在网络上相遇了。也许是缘分，也许是命中注定，从那一刻起，两颗心开始慢慢靠近。</p>
+                <p>第一次视频见面，我就被你深深吸引。从第一天开始，我就觉得看着你也是一种享受，想把你的美刻进我心里。</p>
+                <p>每次见面的一瞬间，我都怦然心动，身体的自然反应好强烈。这种感觉，让我确信你就是那个对的人。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 爱的告白 -->
+    <section class="confession" id="confession">
+        <div class="section-title fade-in">
+            <h2>爱的告白</h2>
+            <div class="divider"></div>
+            <p>写给最爱的你</p>
+        </div>
+        <div class="confession-content fade-in">
+            <div class="confession-text">
+                <p>亲爱的，我好喜欢看你哦，从第一天开始我就觉得看着你也是一种享受，想把你的美刻进我心里😍</p>
+                <p>其实我们每次见面的一瞬间我都怦然心动，身体的自然反应好强烈😊</p>
+                <p>虽然我提出了两次分开，但是没有冲淡分毫我们的感情，反而让我们看清彼此在心底的分量，懂了难舍难分，更懂了珍惜彼此。</p>
+                <p>我们选择了更加坚定地走向对方，跨过小波折，爱意反而愈发浓烈笃定，心贴得比之前更近。</p>
+                <p>有你相伴的这些日子里我真的好幸福，超爱你！在深圳这座温暖的城市，有了你的139天里我觉得空气都是甜的🥰</p>
+                <p>希望我们所有的磨合都变成了相守的底气，往后余生，只愿与你相守，幸福快乐🥰</p>
+            </div>
+            <div class="confession-signature">
+                — 永远爱你的豪
+            </div>
+        </div>
+    </section>
+
+    <!-- 计时器 -->
+    <section class="timer-section">
+        <div class="section-title fade-in">
+            <h2>我们在一起</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="timer-container fade-in">
+            <div class="timer-item">
+                <div class="number" id="days">139</div>
+                <div class="label">天</div>
+            </div>
+            <div class="timer-item">
+                <div class="number" id="hours">0</div>
+                <div class="label">小时</div>
+            </div>
+            <div class="timer-item">
+                <div class="number" id="minutes">0</div>
+                <div class="label">分钟</div>
+            </div>
+            <div class="timer-item">
+                <div class="number" id="seconds">0</div>
+                <div class="label">秒</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 爱情箴言 -->
+    <section class="quote-section" id="quote">
+        <div class="fade-in">
+            <blockquote>
+                往后余生，只愿与你相守，幸福快乐。
+            </blockquote>
+            <div class="author">—— 豪 & 珍</div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>用 <span class="heart">♥</span> 记录我们的爱情故事</p>
+        <p style="margin-top: 0.5rem; color: #5a3a1a;">© 2025 豪 & 珍 — 深圳的爱情故事</p>
+    </footer>
+
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 滚动淡入动画
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        fadeElements.forEach(el => observer.observe(el));
+
+        // 计时器 - 从2025年12月24日开始
+        const startDate = new Date('2025-12-24T00:00:00');
+        
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+        
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    </script>
+
+</body>
+</html>
